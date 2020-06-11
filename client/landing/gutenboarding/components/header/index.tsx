@@ -3,31 +3,18 @@
  */
 import * as React from 'react';
 import classnames from 'classnames';
-import { sprintf } from '@wordpress/i18n';
-import { useViewportMatch } from '@wordpress/compose';
-import { useI18n, ChangeLocaleContextConsumer, ChangeLocaleFunction } from '@automattic/react-i18n';
+import { useI18n } from '@automattic/react-i18n';
 import { Icon, wordpress } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useI18n } from '@automattic/react-i18n';
-
+import { useHistory } from 'react-router-dom';
 /**
  * Internal dependencies
  */
 import { STORE_KEY as ONBOARD_STORE } from '../../stores/onboard';
 import DomainPickerButton from '../domain-picker-button';
 import PlansButton from '../plans-button';
-import { useCurrentStep } from '../../path';
-import SignupForm from '../../components/signup-form';
-import { useDomainSuggestions } from '../../hooks/use-domain-suggestions';
-import { useShouldSiteBePublicOnSelectedPlan } from '../../hooks/use-selected-plan';
-import {
-	getFreeDomainSuggestions,
-	getPaidDomainSuggestions,
-	getRecommendedDomainSuggestion,
-} from '../../utils/domain-suggestions';
-import { PAID_DOMAINS_TO_SHOW } from '../../constants';
+import { ChangeLocaleContextConsumer, ChangeLocaleFunction } from '../../components/locale-context';
 import { usePath, useCurrentStep, Step } from '../../path';
-import { trackEventWithFlow } from '../../lib/analytics';
 import { Button } from '@wordpress/components';
 
 /**
@@ -38,6 +25,8 @@ import './style.scss';
 const Header: React.FunctionComponent = () => {
 	const { __, i18nLocale } = useI18n();
 	const currentStep = useCurrentStep();
+	const history = useHistory();
+	const makePath = usePath();
 
 	const { domain, siteTitle } = useSelect( ( select ) => select( ONBOARD_STORE ).getState() );
 
@@ -73,10 +62,10 @@ const Header: React.FunctionComponent = () => {
 	// todo: just for testing purposes, replace with the actual language picker
 	const handleChangeLocale = ( changeLocale: ChangeLocaleFunction ) => {
 		if ( i18nLocale === 'en' ) {
-			push( makePath( Step[ currentStep ], 'fr' ) );
-			changeLocale( 'fr' );
+			history.push( makePath( Step[ currentStep ], 'ar' ) );
+			changeLocale( 'ar' );
 		} else {
-			push( makePath( Step[ currentStep ], 'en' ) );
+			history.push( makePath( Step[ currentStep ], 'en' ) );
 			changeLocale( 'en' );
 		}
 	};
