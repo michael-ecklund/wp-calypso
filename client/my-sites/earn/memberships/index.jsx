@@ -474,32 +474,54 @@ class MembershipsSection extends Component {
 			<div className="memberships__onboarding-wrapper">
 				<div className="memberships__onboarding-column-info">
 					<div className="memberships__onboarding-header">
-						{ this.props.translate( 'Introducing Recurring Payments.' ) }
+						{ this.props.translate( 'Accept payments on your website.' ) }
 					</div>
 					<p className="memberships__onboarding-paragraph">
 						{ this.props.translate(
-							'Start collecting subscription payments! Recurring Payments is a feature inside the block editor. When editing a post or a page you can insert a button that will allow you to collect paying subscribers.'
+							'WordPress.com Payments makes it easy to sell physical and digital goods, accept donations, charge for in-person services, build a subscription newsletter, and more.'
+						) }
+					</p>
+					<p className="memberships__onboarding-paragraph">
+						{ this.props.translate(
+							'One-time, monthly, and yearly credit and debit card payment options are supported.'
 						) }{ ' ' }
 						<ExternalLink
 							href="https://wordpress.com/support/recurring-payments-button/"
 							icon={ true }
 						>
-							{ this.props.translate( 'Learn more.' ) }
+							{ this.props.translate( 'Learn more about payments.' ) }
 						</ExternalLink>
+					</p>
+					<p className="memberships__onboarding-paragraph">
+						{ this.props.translate(
+							'Payments are safely, securely, and seamlessly processed by Stripe, a payment partner for all credit and debit card payments. Stripe provides easy access to your money and takes just minutes to set up.'
+						) }
 					</p>
 					{ cta }
 					<div className="memberships__onboarding-benefits">
 						<div>
 							<Gridicon size={ 18 } icon="checkmark" />
-							{ this.props.translate( 'Add multiple subscription options' ) }
+							{ this.props.translate(
+								'Add a high converting one-click payment button to your site.'
+							) }
 						</div>
 						<div>
 							<Gridicon size={ 18 } icon="checkmark" />
-							{ this.props.translate( 'Collect payments in 135 countries' ) }
+							{ this.props.translate(
+								'Offer monthly, yearly, and lifetime subscription options.'
+							) }
 						</div>
 						<div>
 							<Gridicon size={ 18 } icon="checkmark" />
-							{ this.props.translate( 'Easily manage subscribers' ) }
+							{ this.props.translate( 'You select which premium content requires payment.' ) }
+						</div>
+						<div>
+							<Gridicon size={ 18 } icon="checkmark" />
+							{ this.props.translate( 'Collect payments in 135 countries.' ) }
+						</div>
+						<div>
+							<Gridicon size={ 18 } icon="checkmark" />
+							{ this.props.translate( 'Easily manage subscribers.' ) }
 						</div>
 					</div>
 				</div>
