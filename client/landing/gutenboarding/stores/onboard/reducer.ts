@@ -38,6 +38,13 @@ const domainSearch: Reducer< string, OnboardAction > = ( state = '', action ) =>
 	return state;
 };
 
+const siteLanguage: Reducer< string, OnboardAction > = ( state = '', action ) => {
+	if ( action.type === 'SET_SITE_LANGUAGE' ) {
+		return action.siteLanguage;
+	}
+	return state;
+};
+
 const domainCategory: Reducer< string | undefined, OnboardAction > = ( state, action ) => {
 	if ( action.type === 'SET_DOMAIN_CATEGORY' ) {
 		return action.domainCategory;
@@ -160,6 +167,7 @@ const reducer = combineReducers( {
 	siteTitle,
 	siteVertical,
 	showSignupDialog,
+	siteLanguage,
 } );
 
 export type State = ReturnType< typeof reducer >;

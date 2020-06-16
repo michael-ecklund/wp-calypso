@@ -29,8 +29,7 @@ const Header: React.FunctionComponent = () => {
 	const makePath = usePath();
 
 	const { domain, siteTitle } = useSelect( ( select ) => select( ONBOARD_STORE ).getState() );
-
-	const { setDomain } = useDispatch( ONBOARD_STORE );
+	const { setDomain, setSiteLanguage } = useDispatch( ONBOARD_STORE );
 
 	React.useEffect( () => {
 		if ( ! siteTitle ) {
@@ -63,9 +62,11 @@ const Header: React.FunctionComponent = () => {
 	const handleChangeLocale = ( changeLocale: ChangeLocaleFunction ) => {
 		if ( i18nLocale === 'en' ) {
 			history.push( makePath( Step[ currentStep ], 'ar' ) );
+			setSiteLanguage( 'ar' );
 			changeLocale( 'ar' );
 		} else {
 			history.push( makePath( Step[ currentStep ], 'en' ) );
+			setSiteLanguage( 'en' );
 			changeLocale( 'en' );
 		}
 	};

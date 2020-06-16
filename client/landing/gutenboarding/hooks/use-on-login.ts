@@ -22,7 +22,7 @@ import { useShouldSiteBePublicOnSelectedPlan } from './use-selected-plan';
 export default function useOnLogin() {
 	const { i18nLocale } = useI18n();
 
-	const { siteTitle } = useSelect( ( select ) => select( ONBOARD_STORE ).getState() );
+	const { siteTitle, siteLanguage } = useSelect( ( select ) => select( ONBOARD_STORE ).getState() );
 	const { createSite } = useDispatch( ONBOARD_STORE );
 
 	const newUser = useSelect( ( select ) => select( USER_STORE ).getNewUser() );
@@ -34,7 +34,7 @@ export default function useOnLogin() {
 
 	const handleCreateSite = React.useCallback(
 		( username: string, bearerToken?: string, isPublicSite?: boolean ) => {
-			createSite( username, freeDomainSuggestion, bearerToken, isPublicSite );
+			createSite( username, siteLanguage, freeDomainSuggestion, bearerToken, isPublicSite );
 		},
 		[ createSite, freeDomainSuggestion ]
 	);

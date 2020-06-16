@@ -27,13 +27,16 @@ import './colors.scss';
 import './style.scss';
 
 const OnboardingEdit: FunctionComponent< BlockEditProps< Attributes > > = () => {
-	const { selectedDesign, siteTitle } = useSelect( ( select ) => select( STORE_KEY ).getState() );
+	const { selectedDesign, siteTitle, siteLanguage } = useSelect( ( select ) =>
+		select( STORE_KEY ).getState()
+	);
 	const { createSite } = useDispatch( STORE_KEY );
 	const isRedirecting = useSelect( ( select ) => select( STORE_KEY ).getIsRedirecting() );
 	const isCreatingSite = useSelect( ( select ) => select( SITE_STORE ).isFetchingSite() );
 	const newSiteError = useSelect( ( select ) => select( SITE_STORE ).getNewSiteError() );
 	const newSite = useSelect( ( select ) => select( SITE_STORE ).getNewSite() );
 	const currentUser = useSelect( ( select ) => select( USER_STORE ).getCurrentUser() );
+
 	const shouldTriggerCreate = useNewQueryParam();
 	const freeDomainSuggestion = useFreeDomainSuggestion();
 
@@ -77,7 +80,7 @@ const OnboardingEdit: FunctionComponent< BlockEditProps< Attributes > > = () => 
 			shouldTriggerCreate &&
 			canUseStyleStep()
 		) {
-			createSite( currentUser.username, freeDomainSuggestion );
+			createSite( currentUser.username, siteLanguage, freeDomainSuggestion );
 		}
 	}, [
 		createSite,
