@@ -7,6 +7,7 @@ import { useI18n } from '@automattic/react-i18n';
 import { Icon, wordpress } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useHistory } from 'react-router-dom';
+
 /**
  * Internal dependencies
  */
@@ -16,6 +17,7 @@ import PlansButton from '../plans-button';
 import { ChangeLocaleContextConsumer, ChangeLocaleFunction } from '../../components/locale-context';
 import { usePath, useCurrentStep, Step } from '../../path';
 import { Button } from '@wordpress/components';
+import { isEnabled } from '../../../../config';
 
 /**
  * Style dependencies
@@ -72,16 +74,21 @@ const Header: React.FunctionComponent = () => {
 	};
 
 	const changeLocaleButton = () => {
-		return (
-			<ChangeLocaleContextConsumer>
-				{ ( changeLocale ) => (
-					<Button onClick={ () => handleChangeLocale( changeLocale ) }>
-						<span>{ __( 'Site Language' ) } </span>
-						<span className="gutenboarding__header-site-language-badge">{ i18nLocale }</span>
-					</Button>
-				) }
-			</ChangeLocaleContextConsumer>
-		);
+		if ( isEnabled( 'gutenboarding/language-picker' ) ) {
+			return (
+				<div className="gutenboarding__header-section-item gutenboarding__header-site-language">
+					<ChangeLocaleContextConsumer>
+						{ ( changeLocale ) => (
+							<Button onClick={ () => handleChangeLocale( changeLocale ) }>
+								<span>{ __( 'Site Language' ) } </span>
+								<span className="gutenboarding__header-site-language-badge">{ i18nLocale }</span>
+							</Button>
+						) }
+					</ChangeLocaleContextConsumer>
+				</div>
+			);
+		}
+		return null;
 	};
 
 	return (
@@ -124,9 +131,7 @@ const Header: React.FunctionComponent = () => {
 						)
 					}
 				</div>
-				<div className="gutenboarding__header-section-item gutenboarding__header-site-language">
-					{ changeLocaleButton() }
-				</div>
+				{ changeLocaleButton() }
 				<div className="gutenboarding__header-section-item gutenboarding__header-plan-section gutenboarding__header-section-item--right">
 					<PlansButton />
 				</div>
