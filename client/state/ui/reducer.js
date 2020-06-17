@@ -11,7 +11,6 @@ import { combineReducers, withoutPersistence } from 'state/utils';
 import actionLog from './action-log/reducer';
 import billingTransactions from './billing-transactions/reducer';
 import checkout from './checkout/reducer';
-import comments from './comments/reducer';
 import dropZone from './drop-zone/reducer';
 import editor from './editor/reducer';
 import googleMyBusiness from './google-my-business/reducer';
@@ -100,7 +99,6 @@ const reducer = combineReducers( {
 	actionLog,
 	billingTransactions,
 	checkout,
-	comments,
 	dropZone,
 	editor,
 	editorDeprecationDialog,
