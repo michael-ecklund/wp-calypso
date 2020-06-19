@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
-import React, { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef, WPSyntheticEvent } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { Button as OriginalButton } from '@wordpress/components';
 import { chevronLeft, wordpress } from '@wordpress/icons';
@@ -35,17 +35,18 @@ const Button = ( {
 );
 
 export default function WpcomBlockEditorNavSidebar() {
-	const [ items, isOpen, postType, selectedItemId, statusLabels ] = useSelect( ( select ) => {
+	const [ isOpen, postType, selectedItemId ] = useSelect( ( select ) => {
 		const { getPostType } = select( 'core' ) as any;
 
 		return [
-			selectNavItems( select ),
 			select( STORE_KEY ).isSidebarOpened(),
 			getPostType( select( 'core/editor' ).getCurrentPostType() ),
 			select( 'core/editor' ).getCurrentPostId(),
-			selectPostStatusLabels( select ),
 		];
 	} );
+
+	const items = useNavItems();
+	const statusLabels = usePostStatusLabels();
 
 	const prevIsOpen = useRef( isOpen );
 	const [ isClosing, setIsClosing ] = useState( false );
@@ -63,13 +64,18 @@ export default function WpcomBlockEditorNavSidebar() {
 
 	const { toggleSidebar } = useDispatch( STORE_KEY );
 
+	if ( ! postType ) {
+		// Still loading
+		return null;
+	}
+
 	let closeUrl = addQueryArgs( 'edit.php', { post_type: postType.slug } );
 	closeUrl = applyFilters( 'a8c.WpcomBlockEditorNavSidebar.closeUrl', closeUrl );
 
 	let closeLabel = get( postType, [ 'labels', 'all_items' ], __( 'Back', 'full-site-editing' ) );
 	closeLabel = applyFilters( 'a8c.WpcomBlockEditorNavSidebar.closeLabel', closeLabel );
 
-	const handleClose = ( e: React.WPSyntheticEvent ) => {
+	const handleClose = ( e: WPSyntheticEvent ) => {
 		if ( hasAction( 'a8c.wpcom-block-editor.closeEditor' ) ) {
 			e.preventDefault();
 			doAction( 'a8c.wpcom-block-editor.closeEditor' );
@@ -169,49 +175,54 @@ function NavItem( { item, selected, statusLabel }: NavItemProps ) {
 	);
 }
 
-export function selectNavItems( select: typeof import('@wordpress/data').select ): Post[] {
-	const { isEditedPostNew, getCurrentPostId, getCurrentPostType, getEditedPostAttribute } = select(
-		'core/editor'
-	);
+function useNavItems(): Post[] {
+	return useSelect( ( select ) => {
+		const {
+			isEditedPostNew,
+			getCurrentPostId,
+			getCurrentPostType,
+			getEditedPostAttribute,
+		} = select( 'core/editor' );
 
-	const statuses = select( 'core' ).getEntityRecords( 'root', 'status' );
-	if ( ! statuses ) {
-		return [];
-	}
+		const statuses = select( 'core' ).getEntityRecords( 'root', 'status' );
+		if ( ! statuses ) {
+			return [];
+		}
 
-	const statusFilter = statuses
-		.filter( ( { show_in_list } ) => show_in_list )
-		.map( ( { slug } ) => slug )
-		.join( ',' );
+		const statusFilter = statuses
+			.filter( ( { show_in_list } ) => show_in_list )
+			.map( ( { slug } ) => slug )
+			.join( ',' );
 
-	const currentPostId = getCurrentPostId();
-	const currentPostType = getCurrentPostType();
+		const currentPostId = getCurrentPostId();
+		const currentPostType = getCurrentPostType();
 
-	const items =
-		select( 'core' ).getEntityRecords( 'postType', currentPostType, {
-			_fields: 'id,slug,status,title',
-			exclude: [ currentPostId ],
-			orderby: 'modified',
-			per_page: 10,
-			status: statusFilter,
-		} ) || [];
+		const items =
+			select( 'core' ).getEntityRecords( 'postType', currentPostType, {
+				_fields: 'id,slug,status,title',
+				exclude: [ currentPostId ],
+				orderby: 'modified',
+				per_page: 10,
+				status: statusFilter,
+			} ) || [];
 
-	const currentPost = {
-		id: currentPostId,
-		slug: getEditedPostAttribute( 'slug' ),
-		status: isEditedPostNew() ? 'draft' : getEditedPostAttribute( 'status' ),
-		title: { raw: getEditedPostAttribute( 'title' ), rendered: '' },
-	};
+		const currentPost = {
+			id: currentPostId,
+			slug: getEditedPostAttribute( 'slug' ),
+			status: isEditedPostNew() ? 'draft' : getEditedPostAttribute( 'status' ),
+			title: { raw: getEditedPostAttribute( 'title' ), rendered: '' },
+		};
 
-	return [ currentPost, ...items ] as any;
+		return [ currentPost, ...items ] as any;
+	} );
 }
 
-export function selectPostStatusLabels(
-	select: typeof import('@wordpress/data').select
-): Record< string, string > {
-	const items = select( 'core' ).getEntityRecords( 'root', 'status' );
-	return ( items || [] ).reduce(
-		( acc, { name, slug } ) => ( slug === 'publish' ? acc : { ...acc, [ slug ]: name } ),
-		{}
-	);
+function usePostStatusLabels(): Record< string, string > {
+	return useSelect( ( select ) => {
+		const items = select( 'core' ).getEntityRecords( 'root', 'status' );
+		return ( items || [] ).reduce(
+			( acc, { name, slug } ) => ( slug === 'publish' ? acc : { ...acc, [ slug ]: name } ),
+			{}
+		);
+	} );
 }

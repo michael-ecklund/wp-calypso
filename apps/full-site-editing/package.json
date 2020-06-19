@@ -106,6 +106,7 @@
 		"@wordpress/html-entities": "*",
 		"@wordpress/i18n": "*",
 		"@wordpress/icons": "*",
+		"@wordpress/interface": "^0.5.0",
 		"@wordpress/keycodes": "*",
 		"@wordpress/plugins": "*",
 		"@wordpress/rich-text": "*",
@@ -116,6 +117,7 @@
 		"newspack-blocks": "github:Automattic/newspack-blocks#v1.7.0"
 	},
 	"devDependencies": {
+		"@types/wordpress__plugins": "^2.3.6",
 		"@wordpress/eslint-plugin": "^6.0.0"
 	}
 }
