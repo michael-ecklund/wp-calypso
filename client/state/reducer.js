@@ -47,7 +47,6 @@ import mySites from './my-sites/reducer';
 import notices from './notices/reducer';
 import notificationSettings from './notification-settings/reducer';
 import { unseenCount as notificationsUnseenCount } from './notifications';
-import npsSurvey from './nps-survey/reducer';
 import oauth2Clients from './oauth2-clients/reducer';
 import orderTransactions from './order-transactions/reducer';
 import pageTemplates from './page-templates/reducer';
@@ -115,7 +114,6 @@ const reducers = {
 	notices,
 	notificationSettings,
 	notificationsUnseenCount,
-	npsSurvey,
 	oauth2Clients,
 	orderTransactions,
 	pageTemplates,
