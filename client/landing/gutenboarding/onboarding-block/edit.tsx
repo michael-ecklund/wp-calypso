@@ -85,6 +85,7 @@ const OnboardingEdit: FunctionComponent< BlockEditProps< Attributes > > = () => 
 	}, [
 		createSite,
 		currentUser,
+		siteLanguage,
 		freeDomainSuggestion,
 		isCreatingSite,
 		newSite,

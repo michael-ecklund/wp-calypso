@@ -36,7 +36,7 @@ export default function useOnLogin() {
 		( username: string, bearerToken?: string, isPublicSite?: boolean ) => {
 			createSite( username, siteLanguage, freeDomainSuggestion, bearerToken, isPublicSite );
 		},
-		[ createSite, freeDomainSuggestion ]
+		[ createSite, siteLanguage, freeDomainSuggestion ]
 	);
 
 	React.useEffect( () => {

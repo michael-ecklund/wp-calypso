@@ -97,7 +97,7 @@ window.AppBoot = async () => {
 
 	let initialLocaleData;
 	try {
-		const [ userLocale, { translatedChunks, ...localeData } ]: [ string, any ] = await getLocale();
+		const [ userLocale, { translatedChunks, ...localeData } ] = await getLocale();
 		initialLocaleData = localeData;
 
 		if ( USE_TRANSLATION_CHUNKS ) {
@@ -318,7 +318,7 @@ async function setupTranslationChunks( localeSlug: string, translatedChunks: str
 	}
 
 	window.__requireChunkCallback__.add(
-		( { publicPath, scriptSrc }: RequireChunkCallbackParameters, promises: any[] ) => {
+		( { publicPath, scriptSrc }: RequireChunkCallbackParameters, promises: [  ] ) => {
 			const chunkId = scriptSrc.replace( publicPath, '' ).replace( /\.js$/, '' );
 
 			promises.push( loadTranslationForChunkIfNeeded( chunkId ) );
