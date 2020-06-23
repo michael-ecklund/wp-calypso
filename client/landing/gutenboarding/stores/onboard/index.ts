@@ -27,6 +27,7 @@ registerStore< State >( STORE_KEY, {
 	persist: [
 		'domain',
 		'siteTitle',
+		'siteLanguage',
 		'siteVertical',
 		'hasUsedPlansStep',
 		'pageLayouts',
