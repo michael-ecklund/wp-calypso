@@ -2,7 +2,6 @@
  * External dependencies
  */
 import '@automattic/calypso-polyfills';
-import { setLocaleData } from '@wordpress/i18n';
 import { I18nProvider } from '@automattic/react-i18n';
 import { getLanguageSlugs } from '../../lib/i18n-utils';
 import {
@@ -101,10 +100,9 @@ window.AppBoot = async () => {
 			| any
 		 )[] = await getLocale();
 		i18nLocaleData = localeData;
-		setLocaleData( localeData );
 
 		if ( USE_TRANSLATION_CHUNKS ) {
-			await setupTranslationChunks( userLocale, translatedChunks );
+			i18nLocaleData = await setupTranslationChunks( userLocale, translatedChunks );
 		}
 
 		// FIXME: Use rtl detection tooling
@@ -278,8 +276,8 @@ async function setupTranslationChunks( localeSlug: string, translatedChunks: str
 
 		return getTranslationChunkFile( chunkId, localeSlug, window.BUILD_TARGET ).then(
 			( translations ) => {
-				setLocaleData( translations );
 				loadedTranslationChunks[ chunkId ] = true;
+				return translations;
 			}
 		);
 	};
@@ -288,8 +286,10 @@ async function setupTranslationChunks( localeSlug: string, translatedChunks: str
 		( window.installedChunks || [] ).concat( window.__requireChunkCallback__.getInstalledChunks() )
 	);
 
-	await Promise.all(
+	const localeData = await Promise.all(
 		[ ...installedChunks ].map( ( chunkId ) => loadTranslationForChunkIfNeeded( chunkId ) )
+	).then( ( values ) =>
+		values.reduce( ( localeDataObj, chunk ) => Object.assign( {}, localeDataObj, chunk ) )
 	);
 
 	interface RequireChunkCallbackParameters {
@@ -304,4 +304,5 @@ async function setupTranslationChunks( localeSlug: string, translatedChunks: str
 			promises.push( loadTranslationForChunkIfNeeded( chunkId ) );
 		}
 	);
+	return localeData;
 }
