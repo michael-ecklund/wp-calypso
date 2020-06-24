@@ -26,6 +26,3 @@ export const dispatchFluxRemoveMediaItemError = ( siteId, error ) => {
 		error,
 	} );
 };
-
-export const dispatchFluxFetchMediaLimits = ( siteId ) =>
-	Dispatcher.handleServerAction( { type: 'FETCH_MEDIA_LIMITS', siteId } );
