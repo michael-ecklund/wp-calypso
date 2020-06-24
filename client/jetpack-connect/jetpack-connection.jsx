@@ -27,12 +27,11 @@ import { isRequestingSites } from 'state/sites/selectors';
 import { retrieveMobileRedirect } from './persistence-utils';
 import { recordTracksEvent } from 'state/analytics/actions';
 
-import { MINIMUM_JETPACK_VERSION } from './constants';
+import { IS_DOT_COM_GET_SEARCH, MINIMUM_JETPACK_VERSION } from './constants';
 import {
 	ALREADY_CONNECTED,
 	ALREADY_OWNED,
 	IS_DOT_COM,
-	IS_DOT_COM_GET_SEARCH,
 	NOT_ACTIVE_JETPACK,
 	NOT_CONNECTED_JETPACK,
 	NOT_EXISTS,
@@ -182,7 +181,8 @@ const jetpackConnection = ( WrappedComponent ) => {
 			return ! this.isCurrentUrlFetching() &&
 				this.isCurrentUrlFetched() &&
 				! this.props.jetpackConnectSite.isDismissed &&
-				this.state.status ? (
+				this.state.status &&
+				this.state.status !== IS_DOT_COM_GET_SEARCH ? (
 				<JetpackConnectNotices
 					noticeType={ this.state.status }
 					onDismissClick={ IS_DOT_COM === this.state.status ? this.goBack : this.dismissUrl }
@@ -223,7 +223,7 @@ const jetpackConnection = ( WrappedComponent ) => {
 			if ( this.checkProperty( 'isWordPressDotCom' ) ) {
 				const product = window.location.href.split( '/' )[ 5 ];
 
-				if ( startsWith( product, 'jetpack_search' ) ) {
+				if ( startsWith( product, 'jetpack_search' ) || startsWith( product, 'wpcom_search' ) ) {
 					return IS_DOT_COM_GET_SEARCH;
 				}
 				return IS_DOT_COM;
