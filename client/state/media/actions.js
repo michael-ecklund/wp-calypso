@@ -23,6 +23,7 @@ import {
 	MEDIA_REQUEST_SUCCESS,
 	MEDIA_REQUESTING,
 	MEDIA_SOURCE_CHANGE,
+	MEDIA_ITEM_DELETE,
 } from 'state/action-types';
 
 import 'state/data-layer/wpcom/sites/media';
@@ -214,6 +215,12 @@ export function deleteMedia( siteId, mediaIds ) {
 		siteId,
 	};
 }
+
+export const deleteMediaItem = ( siteId, mediaId ) => ( {
+	type: MEDIA_ITEM_DELETE,
+	siteId,
+	mediaId,
+} );
 
 /**
  * Returns an action object used in signalling that the media source for the site has changed.

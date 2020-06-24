@@ -5,7 +5,7 @@
 import debug from 'debug';
 import { dispatchRequest } from 'state/data-layer/wpcom-http/utils';
 import { http } from 'state/data-layer/wpcom-http/actions';
-import { MEDIA_REQUEST, MEDIA_ITEM_REQUEST } from 'state/action-types';
+import { MEDIA_REQUEST, MEDIA_ITEM_REQUEST, MEDIA_ITEM_DELETE } from 'state/action-types';
 import {
 	failMediaRequest,
 	failMediaItemRequest,
@@ -14,7 +14,12 @@ import {
 	requestingMediaItem,
 	successMediaRequest,
 	successMediaItemRequest,
+	deleteMedia,
 } from 'state/media/actions';
+import {
+	dispatchFluxRemoveMediaItemSuccess,
+	dispatchFluxRemoveMediaItemError,
+} from 'state/media/utils/flux-adapter';
 
 import { registerHandlers } from 'state/data-layer/handler-registry';
 
@@ -73,6 +78,28 @@ export const receiveMediaItem = ( { mediaId, siteId }, media ) => [
 export const receiveMediaItemError = ( { mediaId, siteId } ) =>
 	failMediaItemRequest( siteId, mediaId );
 
+export const requestDeleteMedia = ( action ) => {
+	return [
+		http(
+			{
+				apiVersion: '1.1',
+				method: 'POST',
+				path: `/sites/${ action.siteId }/media/${ action.mediaId }/delete`,
+			},
+			action
+		),
+	];
+};
+
+export const deleteMediaSuccess = ( { siteId }, mediaItem ) => ( dispatch ) => {
+	dispatch( deleteMedia( siteId, mediaItem.ID ) );
+	dispatchFluxRemoveMediaItemSuccess( siteId, mediaItem );
+};
+
+export const deleteMediaError = ( { siteId }, error ) => () => {
+	dispatchFluxRemoveMediaItemError( siteId, error );
+};
+
 registerHandlers( 'state/data-layer/wpcom/sites/media/index.js', {
 	[ MEDIA_REQUEST ]: [
 		dispatchRequest( {
@@ -87,6 +114,14 @@ registerHandlers( 'state/data-layer/wpcom/sites/media/index.js', {
 			fetch: handleMediaItemRequest,
 			onSuccess: receiveMediaItem,
 			onError: receiveMediaItemError,
+		} ),
+	],
+
+	[ MEDIA_ITEM_DELETE ]: [
+		dispatchRequest( {
+			fetch: requestDeleteMedia,
+			onSuccess: deleteMediaSuccess,
+			onError: deleteMediaError,
 		} ),
 	],
 } );
