@@ -3,6 +3,7 @@
  */
 import '@automattic/calypso-polyfills';
 import { I18nProvider } from '@automattic/react-i18n';
+import { setLocaleData } from '@wordpress/i18n';
 import { getLanguageSlugs } from '../../lib/i18n-utils';
 import {
 	getLanguageFile,
@@ -110,6 +111,10 @@ window.AppBoot = async () => {
 			switchWebpackCSS( true );
 		}
 	} catch {}
+
+	// Translations done within react are made using the localData passed to the <I18nProvider/>.
+	// We must also set the locale for translations done outside of a react rendering cycle using setLocaleData.
+	setLocaleData( i18nLocaleData );
 
 	try {
 		checkAndRedirectIfSiteWasCreatedRecently();
