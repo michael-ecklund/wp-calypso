@@ -12,6 +12,7 @@ import { addFilter } from '@wordpress/hooks';
  */
 import { settings } from './synced-newspack-blocks/blocks/homepage-articles/index';
 import { registerQueryStore } from './synced-newspack-blocks/blocks/homepage-articles/store';
+import { hasLegacyCategory } from '../block-helpers';
 
 /**
  * Block name in the A8C\FSE context.
@@ -31,7 +32,7 @@ addFilter(
 registerBlockType( blockName, {
 	...settings,
 	title: __( 'Blog Posts', 'full-site-editing' ),
-	category: 'layout',
+	category: hasLegacyCategory ? 'layout' : 'widgets',
 } );
 
 registerQueryStore( blockName );
