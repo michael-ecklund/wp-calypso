@@ -82,7 +82,7 @@ module.exports = {
 		// this is when Webpack last built the bundle
 		BUILD_TIMESTAMP: true,
 	},
-	plugins: [ 'jest', 'jsx-a11y', 'import' ],
+	plugins: [ 'jest', 'jsx-a11y', 'import', 'inclusive-language' ],
 	settings: {
 		react: {
 			version: reactVersion,
@@ -176,5 +176,8 @@ module.exports = {
 		// - events because we use it for some event emitters
 		// - path because we use it quite a bit
 		'import/no-nodejs-modules': [ 'error', { allow: [ 'url', 'events', 'path', 'config' ] } ],
+
+		// Ensure we do not reintroduce non-inclusive language into our repository
+		'inclusive-language/use-inclusive-words': 'error',
 	},
 };
