@@ -5,7 +5,7 @@ import debugModule from 'debug';
 import config from 'config';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { flowRight, get, includes, startsWith } from 'lodash';
+import { flowRight, get, includes } from 'lodash';
 import { localize } from 'i18n-calypso';
 
 /**
@@ -84,6 +84,7 @@ const jetpackConnection = ( WrappedComponent ) => {
 			) {
 				this.redirect( 'remote_auth', this.props.siteHomeUrl );
 			}
+
 			if ( status === ALREADY_OWNED && ! this.state.redirecting ) {
 				if ( isMobileAppFlow ) {
 					this.redirectToMobileApp( 'already-connected' );
@@ -201,10 +202,6 @@ const jetpackConnection = ( WrappedComponent ) => {
 				return SITE_BLACKLISTED;
 			}
 
-			if ( this.checkProperty( 'userOwnsSite' ) ) {
-				return ALREADY_OWNED;
-			}
-
 			if ( this.props.jetpackConnectSite.installConfirmedByUser === false ) {
 				return NOT_JETPACK;
 			}
@@ -220,14 +217,6 @@ const jetpackConnection = ( WrappedComponent ) => {
 				return WORDPRESS_DOT_COM;
 			}
 
-			if ( this.checkProperty( 'isWordPressDotCom' ) ) {
-				const product = window.location.href.split( '/' )[ 5 ];
-
-				if ( startsWith( product, 'jetpack_search' ) || startsWith( product, 'wpcom_search' ) ) {
-					return IS_DOT_COM_GET_SEARCH;
-				}
-				return IS_DOT_COM;
-			}
 			if ( ! this.checkProperty( 'exists' ) ) {
 				return NOT_EXISTS;
 			}
@@ -252,6 +241,10 @@ const jetpackConnection = ( WrappedComponent ) => {
 			}
 			if ( this.checkProperty( 'isJetpackConnected' ) && this.checkProperty( 'userOwnsSite' ) ) {
 				return ALREADY_CONNECTED;
+			}
+
+			if ( this.checkProperty( 'userOwnsSite' ) ) {
+				return ALREADY_OWNED;
 			}
 
 			return false;
