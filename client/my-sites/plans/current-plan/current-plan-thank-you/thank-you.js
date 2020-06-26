@@ -12,7 +12,7 @@ import React, { Component } from 'react';
  */
 import { preventWidows } from 'lib/formatting';
 import { settingsPath } from 'lib/jetpack/paths';
-import { requestGuidedTour } from 'state/ui/guided-tours/actions';
+import { requestGuidedTour } from 'state/guided-tours/actions';
 import { Button } from '@automattic/components';
 import getCurrentQueryArguments from 'state/selectors/get-current-query-arguments';
 import getCurrentRoute from 'state/selectors/get-current-route';
