@@ -16,6 +16,7 @@ import QueryJetpackScan from 'components/data/query-jetpack-scan';
 import ScanPlaceholder from 'components/jetpack/scan-placeholder';
 import ScanHistoryPlaceholder from 'components/jetpack/scan-history-placeholder';
 import isJetpackCloud from 'lib/jetpack/is-jetpack-cloud';
+import { isJetpackScanSlug } from 'lib/products-values';
 
 export function showUpsellIfNoScan( context, next ) {
 	context.primary = scanUpsellSwitcher( <ScanPlaceholder />, context.primary );
@@ -47,6 +48,7 @@ function scanUpsellSwitcher( placeholder, primary ) {
 			display={ primary }
 			getStateForSite={ getSiteScanState }
 			QueryComponent={ QueryJetpackScan }
+			productSlugTest={ isJetpackScanSlug }
 		>
 			{ placeholder }
 		</UpsellSwitch>

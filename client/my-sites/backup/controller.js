@@ -17,6 +17,7 @@ import SidebarNavigation from 'my-sites/sidebar-navigation';
 import getRewindState from 'state/selectors/get-rewind-state';
 import QueryRewindState from 'components/data/query-rewind-state';
 import isJetpackCloud from 'lib/jetpack/is-jetpack-cloud';
+import { isJetpackBackupSlug } from 'lib/products-values';
 
 export function showUpsellIfNoBackup( context, next ) {
 	const UpsellComponent = isJetpackCloud() ? BackupUpsell : WPCOMBackupUpsell;
@@ -27,6 +28,7 @@ export function showUpsellIfNoBackup( context, next ) {
 				display={ context.primary }
 				getStateForSite={ getRewindState }
 				QueryComponent={ QueryRewindState }
+				productSlugTest={ isJetpackBackupSlug }
 			>
 				<SidebarNavigation />
 				{ ! isJetpackCloud() && (
