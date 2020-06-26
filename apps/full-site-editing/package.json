@@ -116,6 +116,7 @@
 		"newspack-blocks": "github:Automattic/newspack-blocks#v1.7.0"
 	},
 	"devDependencies": {
+		"@types/jest": "^26.0.3",
 		"@wordpress/eslint-plugin": "^6.0.0"
 	}
 }

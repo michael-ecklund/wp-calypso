@@ -13,9 +13,7 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 
-// @wordpress/scripts manually adds additional Jest config ontop of
-// @wordpress/jest-preset-default so we pull in this file to extend it
-const defaults = require( '@wordpress/scripts/config/jest-unit.config.js' );
+const defaults = require( '../../../packages/calypso-build/jest-preset' );
 const path = require( 'path' );
 
 // Basically, CWD, so 'apps/full-site-editing'.
