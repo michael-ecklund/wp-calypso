@@ -38,6 +38,7 @@ import {
 import { createFullCreditsMethod } from './lib/payment-methods/full-credits';
 import { createFreePaymentMethod } from './lib/payment-methods/free-purchase';
 import { createIdealPaymentMethodStore, createIdealMethod } from './lib/payment-methods/ideal';
+import { createP24PaymentMethodStore, createP24Method } from './lib/payment-methods/p24';
 import {
 	createGiropayPaymentMethodStore,
 	createGiropayMethod,
@@ -93,6 +94,8 @@ export {
 	createGiropayPaymentMethodStore,
 	createIdealMethod,
 	createIdealPaymentMethodStore,
+	createP24Method,
+	createP24PaymentMethodStore,
 	createPayPalMethod,
 	createRegistry,
 	createStripeMethod,
