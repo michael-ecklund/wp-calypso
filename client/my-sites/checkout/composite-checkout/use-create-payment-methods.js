@@ -8,6 +8,8 @@ import {
 	createStripeMethod,
 	createGiropayMethod,
 	createGiropayPaymentMethodStore,
+	createP24Method,
+	createP24PaymentMethodStore,
 	createIdealMethod,
 	createIdealPaymentMethodStore,
 	createFullCreditsMethod,
@@ -64,6 +66,30 @@ function useCreateStripe( {
 		[ shouldLoadStripeMethod, stripePaymentMethodStore, stripe, stripeConfiguration ]
 	);
 	return stripeMethod;
+}
+
+function useCreateP24( {
+	onlyLoadPaymentMethods,
+	isStripeLoading,
+	stripeLoadingError,
+	stripeConfiguration,
+	stripe,
+} ) {
+	// If this PM is allowed by props, allowed by the cart, stripe is not loading, and there is no stripe error, then create the PM.
+	const isMethodAllowed = onlyLoadPaymentMethods ? onlyLoadPaymentMethods.includes( 'p24' ) : true;
+	const shouldLoad = isMethodAllowed && ! isStripeLoading && ! stripeLoadingError;
+	const paymentMethodStore = useMemo( () => createP24PaymentMethodStore(), [] );
+	return useMemo(
+		() =>
+			shouldLoad
+				? createP24Method( {
+						store: paymentMethodStore,
+						stripe,
+						stripeConfiguration,
+				  } )
+				: null,
+		[ shouldLoad, paymentMethodStore, stripe, stripeConfiguration ]
+	);
 }
 
 function useCreateGiropay( {
@@ -238,6 +264,14 @@ export default function useCreatePaymentMethods( {
 		stripe,
 	} );
 
+	const p24Method = useCreateP24( {
+		onlyLoadPaymentMethods,
+		isStripeLoading,
+		stripeLoadingError,
+		stripeConfiguration,
+		stripe,
+	} );
+
 	const giropayMethod = useCreateGiropay( {
 		onlyLoadPaymentMethods,
 		isStripeLoading,
@@ -284,6 +318,7 @@ export default function useCreatePaymentMethods( {
 		...existingCardMethods,
 		idealMethod,
 		giropayMethod,
+		p24Method,
 		stripeMethod,
 		paypalMethod,
 	].filter( Boolean );
