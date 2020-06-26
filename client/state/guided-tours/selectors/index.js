@@ -32,7 +32,7 @@ import getToursHistory from './get-tours-history';
 
 import 'state/guided-tours/init';
 
-const BLACKLISTED_SECTIONS = [
+const REJECTED_SECTIONS = [
 	'signup',
 	'upgrades', // checkout
 	'checkout-thank-you', // thank you page
@@ -150,7 +150,7 @@ const findTriggeredTour = ( state ) => {
 	} );
 };
 
-const isSectionBlacklisted = ( state ) => includes( BLACKLISTED_SECTIONS, getSectionName( state ) );
+const isSectionRejected = ( state ) => includes( REJECTED_SECTIONS, getSectionName( state ) );
 
 export const hasTourJustBeenVisible = createSelector(
 	( state, now = Date.now() ) => {
@@ -164,7 +164,7 @@ export const hasTourJustBeenVisible = createSelector(
 	[ getActionLog ]
 );
 
-const shouldBailAllTours = ( state ) => isSectionBlacklisted( state );
+const shouldBailAllTours = ( state ) => isSectionRejected( state );
 
 const shouldBailNewTours = ( state ) => hasTourJustBeenVisible( state );
 
