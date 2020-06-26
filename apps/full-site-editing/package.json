@@ -116,7 +116,9 @@
 		"newspack-blocks": "github:Automattic/newspack-blocks#v1.7.0"
 	},
 	"devDependencies": {
+		"@babel/preset-typescript": "^7.10.1",
 		"@types/jest": "^26.0.3",
-		"@wordpress/eslint-plugin": "^6.0.0"
+		"@wordpress/eslint-plugin": "^6.0.0",
+		"babel-jest": "^26.1.0"
 	}
 }

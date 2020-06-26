@@ -13,7 +13,9 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 
-const defaults = require( '../../../packages/calypso-build/jest-preset' );
+// @wordpress/scripts manually adds additional Jest config ontop of
+// @wordpress/jest-preset-default so we pull in this file to extend it
+const defaults = require( '@wordpress/scripts/config/jest-unit.config.js' );
 const path = require( 'path' );
 
 // Basically, CWD, so 'apps/full-site-editing'.
@@ -24,6 +26,7 @@ const config = {
 	...defaults,
 	rootDir: path.normalize( '../../../' ), // To detect wp-calypso root node_modules
 	testMatch: [ `${ pluginRoot }/**/?(*.)test.[jt]s?(x)` ],
+	transform: { '^.+\\.[jt]sx?$': path.join( __dirname, 'babel-transform' ) },
 	setupFilesAfterEnv: [
 		...( defaults.setupFilesAfterEnv || [] ), // extend if present
 		'<rootDir>/apps/full-site-editing/bin/js-unit-setup',
