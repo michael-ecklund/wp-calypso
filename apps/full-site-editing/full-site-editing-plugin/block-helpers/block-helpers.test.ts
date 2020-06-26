@@ -7,7 +7,7 @@ jest.mock( '@wordpress/blocks', () => ( {
 	getCategories: () => [ { slug: 'foobar' }, { slug: 'barfoo' } ],
 } ) );
 
-describe( 'getCategoriyWithFallbacks', () => {
+describe( 'getCategoryWithFallbacks', () => {
 	describe( 'single category passed', () => {
 		it( 'returns the category if it exists', () => {
 			expect( getCategoryWithFallbacks( 'foobar' ) ).toBe( 'foobar' );
