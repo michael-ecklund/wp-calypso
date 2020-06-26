@@ -15,13 +15,13 @@ import { getCategories } from '@wordpress/blocks';
  * @throws {Error} if the no categories could be found.
  */
 export function getCategoryWithFallbacks( ...requestedCategories: string[] ): string {
-	const knownCategories: Array< { slug: string } > = getCategories();
+	const knownCategories = getCategories();
 	for ( const requestedCategory of requestedCategories ) {
 		if ( knownCategories.some( ( { slug } ) => slug === requestedCategory ) ) {
 			return requestedCategory;
 		}
 	}
 	throw new Error(
-		`Could not find a category from the list provided ${ requestedCategories.join( ',' ) }`
+		`Could not find a category from the provided list: ${ requestedCategories.join( ',' ) }`
 	);
 }
