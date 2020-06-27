@@ -12,6 +12,11 @@ import { addFilter } from '@wordpress/hooks';
 import { settings } from './synced-newspack-blocks/blocks/carousel/index';
 
 /**
+ * Internal dependencies
+ */
+import { getCategoryWithFallbacks } from '../block-helpers';
+
+/**
  * Block name in the A8C\FSE context.
  */
 const blockName = 'a8c/posts-carousel';
@@ -28,5 +33,5 @@ addFilter(
 
 registerBlockType( blockName, {
 	...settings,
-	category: 'layout',
+	category: getCategoryWithFallbacks( 'layout', 'widgets' ),
 } );

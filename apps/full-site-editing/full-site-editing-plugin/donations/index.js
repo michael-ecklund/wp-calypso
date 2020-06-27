@@ -10,6 +10,7 @@ import { __, _x } from '@wordpress/i18n';
  * Internal dependencies
  */
 import edit from './edit';
+import { getCategoryWithFallbacks } from '../block-helpers';
 import './style.scss';
 
 /**
@@ -48,7 +49,7 @@ function registerDonationsBlock() {
 	registerBlockType( 'a8c/donations', {
 		title: __( 'Donations (a8c-only)', 'full-site-editing' ),
 		description: __( 'Accept donations on your site.', 'full-site-editing' ),
-		category: 'common',
+		category: getCategoryWithFallbacks( 'common', 'widgets' ),
 		icon: (
 			<svg
 				width="25"
