@@ -160,7 +160,9 @@ export function generateSteps( {
 			apiRequestFunction: createAccount,
 			fulfilledStepCallback: maybeRemoveStepForUserlessCheckout,
 			providesToken: true,
+			dependencies: [ 'cartItem', 'domainItem' ],
 			providesDependencies: [ 'bearer_token', 'username', 'marketing_price_group' ],
+			optionalDependencies: [ 'bearer_token', 'username', 'marketing_price_group' ],
 			props: {
 				isSocialSignupEnabled: config.isEnabled( 'signup/social' ),
 			},
@@ -354,6 +356,7 @@ export function generateSteps( {
 			stepName: 'domains',
 			apiRequestFunction: createSiteWithCart,
 			providesDependencies: [ 'domainItem', 'themeItem', 'siteUrl' ],
+			allowUnauthenticated: true,
 			props: {
 				isDomainOnly: false,
 			},
@@ -698,8 +701,10 @@ export function generateSteps( {
 		'verify-cart': {
 			stepName: 'verify-cart',
 			apiRequestFunction: verifyCart,
+			allowUnauthenticated: true,
 			dependencies: [ 'siteUrl', 'cartItem', 'domainItem' ],
 			providesDependencies: [ 'siteId', 'siteSlug' ],
+			optionalDependencies: [ 'siteId', 'siteSlug' ],
 		},
 	};
 }
