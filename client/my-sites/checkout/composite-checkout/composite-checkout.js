@@ -477,6 +477,8 @@ export default function CompositeCheckout( {
 			card: stripeCardProcessor,
 			giropay: ( transactionData ) =>
 				genericRedirectProcessor( 'giropay', transactionData, getThankYouUrl, isWhiteGloveOffer ),
+			wechat: ( transactionData ) =>
+				genericRedirectProcessor( 'wechat', transactionData, getThankYouUrl, isWhiteGloveOffer ),
 			ideal: ( transactionData ) =>
 				genericRedirectProcessor( 'ideal', transactionData, getThankYouUrl, isWhiteGloveOffer ),
 			'full-credits': fullCreditsProcessor,
