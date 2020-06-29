@@ -8,6 +8,8 @@ import {
 	createStripeMethod,
 	createGiropayMethod,
 	createGiropayPaymentMethodStore,
+	createWeChatMethod,
+	createWeChatPaymentMethodStore,
 	createIdealMethod,
 	createIdealPaymentMethodStore,
 	createFullCreditsMethod,
@@ -83,6 +85,32 @@ function useCreateGiropay( {
 		() =>
 			shouldLoad
 				? createGiropayMethod( {
+						store: paymentMethodStore,
+						stripe,
+						stripeConfiguration,
+				  } )
+				: null,
+		[ shouldLoad, paymentMethodStore, stripe, stripeConfiguration ]
+	);
+}
+
+function useCreateWeChat( {
+	onlyLoadPaymentMethods,
+	isStripeLoading,
+	stripeLoadingError,
+	stripeConfiguration,
+	stripe,
+} ) {
+	// If this PM is allowed by props, allowed by the cart, stripe is not loading, and there is no stripe error, then create the PM.
+	const isMethodAllowed = onlyLoadPaymentMethods
+		? onlyLoadPaymentMethods.includes( 'wechat' )
+		: true;
+	const shouldLoad = isMethodAllowed && ! isStripeLoading && ! stripeLoadingError;
+	const paymentMethodStore = useMemo( () => createWeChatPaymentMethodStore(), [] );
+	return useMemo(
+		() =>
+			shouldLoad
+				? createWeChatMethod( {
 						store: paymentMethodStore,
 						stripe,
 						stripeConfiguration,
@@ -246,6 +274,14 @@ export default function useCreatePaymentMethods( {
 		stripe,
 	} );
 
+	const wechatMethod = useCreateWeChat( {
+		onlyLoadPaymentMethods,
+		isStripeLoading,
+		stripeLoadingError,
+		stripeConfiguration,
+		stripe,
+	} );
+
 	const stripeMethod = useCreateStripe( {
 		onlyLoadPaymentMethods,
 		isStripeLoading,
@@ -284,6 +320,7 @@ export default function useCreatePaymentMethods( {
 		...existingCardMethods,
 		idealMethod,
 		giropayMethod,
+		wechatMethod,
 		stripeMethod,
 		paypalMethod,
 	].filter( Boolean );
