@@ -42,6 +42,7 @@ import {
 	createGiropayPaymentMethodStore,
 	createGiropayMethod,
 } from './lib/payment-methods/giropay';
+import { createWeChatPaymentMethodStore, createWeChatMethod } from './lib/payment-methods/wechat';
 import {
 	createStripeMethod,
 	createStripePaymentMethodStore,
@@ -97,6 +98,8 @@ export {
 	createRegistry,
 	createStripeMethod,
 	createStripePaymentMethodStore,
+	createWeChatMethod,
+	createWeChatPaymentMethodStore,
 	defaultRegistry,
 	getDefaultOrderReviewStep,
 	getDefaultOrderSummary,
