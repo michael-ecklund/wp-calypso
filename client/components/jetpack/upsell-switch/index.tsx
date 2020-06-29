@@ -69,6 +69,7 @@ function UpsellSwitch( props: Props ): React.ReactElement {
 		isLoading: true,
 	} );
 
+	// Returns true if this product is present, either as a product or in the plan.
 	const hasProduct = useMemo( () => {
 		if ( ! productSlugTest || ( ! siteProducts && ! sitePlan ) ) {
 			return false;
